@@ -13,7 +13,6 @@ public class WebServer {
     private static final String STATUS_ENDPOINT = "/status";
 
     private final int port;
-    private HttpServer server;
     private final OnRequestCallback onRequestCallback;
 
     public WebServer(int port, OnRequestCallback onRequestCallback) {
@@ -22,8 +21,9 @@ public class WebServer {
     }
 
     public void startServer() {
+        HttpServer server;
         try {
-            this.server = HttpServer.create(new InetSocketAddress(port), 0);
+            server = HttpServer.create(new InetSocketAddress(port), 0);
         } catch (IOException e) {
             e.printStackTrace();
             return;

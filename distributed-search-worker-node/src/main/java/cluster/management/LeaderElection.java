@@ -8,7 +8,7 @@ import java.util.List;
 
 public class LeaderElection implements Watcher {
     private static final String ELECTION_NAMESPACE = "/election";
-    private String currentZnodeName;
+    private String currentZNodeName;
     private final ZooKeeper zooKeeper;
     private OnElectionCallback onElectionCallback;
 
@@ -25,31 +25,31 @@ public class LeaderElection implements Watcher {
                 CreateMode.EPHEMERAL_SEQUENTIAL);
 
         System.out.println("znode name " + znodeFullPath);
-        this.currentZnodeName = znodeFullPath.replace(ELECTION_NAMESPACE + "/", "");
+        this.currentZNodeName = znodeFullPath.replace(ELECTION_NAMESPACE + "/", "");
     }
 
     public void reelectLeader() throws KeeperException, InterruptedException {
         Stat predecessorStat = null;
-        String predecessorZnodeName = "";
+        String predecessorZNodeName = "";
         while (predecessorStat == null) {
             List<String> children = zooKeeper.getChildren(ELECTION_NAMESPACE, false);
 
             Collections.sort(children);
             String smallestChild = children.get(0);
 
-            if (smallestChild.equals(currentZnodeName)) {
+            if (smallestChild.equals(currentZNodeName)) {
                 System.out.println("I am the leader");
                 onElectionCallback.onElectedToBeLeader();
                 return;
             } else {
                 System.out.println("I am not the leader");
-                int predecessorIndex = Collections.binarySearch(children, currentZnodeName) - 1;
-                predecessorZnodeName = children.get(predecessorIndex);
-                predecessorStat = zooKeeper.exists(ELECTION_NAMESPACE + "/" + predecessorZnodeName, this);
+                int predecessorIndex = Collections.binarySearch(children, currentZNodeName) - 1;
+                predecessorZNodeName = children.get(predecessorIndex);
+                predecessorStat = zooKeeper.exists(ELECTION_NAMESPACE + "/" + predecessorZNodeName, this);
             }
         }
         onElectionCallback.onWorker();
-        System.out.println("Watching znode " + predecessorZnodeName);
+        System.out.println("Watching znode " + predecessorZNodeName);
         System.out.println();
     }
 

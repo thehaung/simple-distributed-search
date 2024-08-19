@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class FrontendSearchResponse {
-    private List<SearchResultInfo> searchResults = Collections.emptyList();
-    private String documentsLocation = "";
+    private final List<SearchResultInfo> searchResults;
+    private final String documentsLocation;
 
     public FrontendSearchResponse(List<SearchResultInfo> searchResults, String documentsLocation) {
         this.searchResults = searchResults;
@@ -21,9 +21,9 @@ public class FrontendSearchResponse {
     }
 
     public static class SearchResultInfo {
-        private String title;
-        private String extension;
-        private int score;
+        private final String title;
+        private final String extension;
+        private final int score;
 
         public SearchResultInfo(String title, String extension, int score) {
             this.title = title;

@@ -7,15 +7,14 @@ import java.util.*;
 public class TFIDF {
 
     public static double calculateTermFrequency(List<String> words, String term) {
-        long count = 0;
+        double count = 0;
         for (String word : words) {
             if (term.equalsIgnoreCase(word)) {
                 count++;
             }
         }
 
-        double termFrequency = (double) count / words.size();
-        return termFrequency;
+        return count / words.size();
     }
 
     public static DocumentData createDocumentData(List<String> words, List<String> terms) {
